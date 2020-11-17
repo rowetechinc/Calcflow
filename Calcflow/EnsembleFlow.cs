@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using EstimatingFlowMode;
 
+#pragma warning disable IDE0017
+#pragma warning disable CS1573
+
 namespace Calcflow
 {
     internal class EnsembleFlow : CalculateFlow

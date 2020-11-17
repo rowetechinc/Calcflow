@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
+#pragma warning disable IDE0017
+#pragma warning disable CS1591
+#pragma warning disable CS1573
+
 namespace Calcflow
 {
     /// <summary>
@@ -163,8 +167,8 @@ namespace Calcflow
         //JZH 2012-04-08 添加一个计算岸边平均流速的方法
         public static double CalculateShoreVelocity(CalculateShoreFlowParam param)
         {
-            ShoreFlow flow = new ShoreFlow();            
-            EarthVelocity eVel=new EarthVelocity();
+            ShoreFlow flow = new ShoreFlow();
+            EarthVelocity eVel;//=new EarthVelocity();
             eVel = flow.CalculateAvgVelocity(param.RiverDischargeOrgData, 0.0);
             double fVelDir = System.Math.Atan2(eVel.EastVelocity, eVel.NorthVelocity);
             if (fVelDir < 0)

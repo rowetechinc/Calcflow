@@ -58,11 +58,12 @@ namespace RawDataParse
 
 
         internal const int MaxArray = 16;
-
+        /*
         private byte ByteArrayToByte(byte[] packet)
         {
             return packet[PacketPointer++];
         }
+        */
         private float ByteArrayToFloat(byte[] packet)
         {
             if (packet.Length > this.PacketPointer + 4)  //LPJ 2019-12-30
@@ -90,7 +91,7 @@ namespace RawDataParse
             string s = "";
             for (int i = 0; i < len; i++)
             {
-                s = s + ((char)packet[PacketPointer++]);
+                s += ((char)packet[PacketPointer++]);
             }
             return s;
         }
@@ -226,7 +227,7 @@ namespace RawDataParse
                     m.hsec = this.ByteArrayToInt(packet);
 
                     ///////////////2013-11-04  解析第22-23个字符以用于双频仪器中////////////////////
-                    int j = 0;
+                    int j;
                     for (j = 0; j < 32; j++)
                     {
                         if (packet[PacketPointer] > 31 && packet[PacketPointer] < 127)
@@ -528,7 +529,7 @@ namespace RawDataParse
 
         private int GetDataTypeSize(int type)
         {
-            int dataType = 4;
+            int dataType;
             switch (type)
             {
                 case 50:
