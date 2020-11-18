@@ -94,7 +94,7 @@ namespace RawDataParse
             BytesArray.AddRange(pack);
 
             int index = 0;
-            int header = -1;
+            int header;// = -1;
             while ((header = FindEnsembleHeader(BytesArray, index)) != -1)
             {
                 index = 0;

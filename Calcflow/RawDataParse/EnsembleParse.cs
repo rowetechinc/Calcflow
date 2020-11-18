@@ -98,8 +98,8 @@ namespace RawDataParse
 
         public void Parse(byte[] packet, ArrayClass m, int PacketSize)
         {
-            int SizeCount = 0;
-            int ArrayCount = 0;
+            int SizeCount;// = 0;
+            int ArrayCount;// = 0;
             m.VelocityAvailable = false;
             m.InstrumentAvailable = false;
             m.EarthAvailable = false;
