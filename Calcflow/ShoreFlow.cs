@@ -91,8 +91,8 @@ namespace Calcflow
 
                 all_range.Add(ensemble_avg);
             }
-            if(all_range.Count == 0)
-                throw new Exception("Average Range Error in ShoreFlow Calculation!");
+            //if(all_range.Count == 0)
+            //    throw new Exception("Average Range Error in ShoreFlow Calculation!");
 
             foreach(double e_range in all_range)
             {
