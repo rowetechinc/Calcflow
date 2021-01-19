@@ -37,13 +37,15 @@ namespace Calcflow
         {
 
             EarthVelocity avg_vel;
+            avg_vel.EastVelocity = 0;
+            avg_vel.NorthVelocity = 0;
             try
             {
                 avg_vel = CalculateAvgVelocity(src, _draft);
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
-                throw new Exception("Average Velocity Error in ShoreFlow Calculation!" + "\r\n" + ex.Message, ex);
+                //throw new Exception("Average Velocity Error in ShoreFlow Calculation!" + "\r\n" + ex.Message, ex);
             }
 
             //求取船首方向角的平均值
@@ -118,6 +120,13 @@ namespace Calcflow
         /// <returns>地理坐标系下的平均流速</returns>
         public  EarthVelocity CalculateAvgVelocity(ArrayClass[] srcs, double draft)  //JZH 2012-04-08 提供公共方法
         {
+            EarthVelocity avg = new EarthVelocity();
+            {
+                avg.EastVelocity = 0;
+                avg.NorthVelocity = 0;
+                avg.UpVelocity = 0;
+                avg.qVelocity = 0;
+            }
             List<EarthVelocity> vels = new List<EarthVelocity>();
             foreach (ArrayClass src in srcs)
             {
@@ -128,8 +137,8 @@ namespace Calcflow
                     continue;
                 //单元大小
                 double Da = src.A_CellSize;
-                if (Da < 1e-6)
-                    throw new Exception("Cell Size too small");
+                //if (Da < 1e-6)
+                //    throw new Exception("Cell Size too small");
 
                 //底跟踪四个波束中的最小深度
                 double Dmin = double.NaN;
@@ -228,8 +237,8 @@ namespace Calcflow
 
             }
             //如果数据组全部不可信，则返回null
-            if (vels.Count == 0)
-                throw new Exception("No Useful Ensembles");
+            //if (vels.Count == 0)
+            //    throw new Exception("No Useful Ensembles");
 
             //求多次测量平均速度
             double avgall_ve = 0, avgall_vn = 0, avgall_vu = 0, avgall_vq = 0;
@@ -240,16 +249,20 @@ namespace Calcflow
                 avgall_vu += avg_v.UpVelocity;
                 avgall_vq += avg_v.qVelocity;
             }
-            avgall_ve /= vels.Count;
-            avgall_vn /= vels.Count;
-            avgall_vu /= vels.Count;
-            avgall_vq /= vels.Count;
+            if (vels.Count > 0)
+            {
+                avgall_ve /= vels.Count;
+                avgall_vn /= vels.Count;
+                avgall_vu /= vels.Count;
+                avgall_vq /= vels.Count;
 
-            EarthVelocity avg = new EarthVelocity();
-            avg.EastVelocity = avgall_ve;
-            avg.NorthVelocity = avgall_vn;
-            avg.UpVelocity = avgall_vu;
-            avg.qVelocity = avgall_vq;
+                //EarthVelocity avg = new EarthVelocity();
+                avg.EastVelocity = avgall_ve;
+                avg.NorthVelocity = avgall_vn;
+                avg.UpVelocity = avgall_vu;
+                avg.qVelocity = avgall_vq;
+            }
+
             return avg;
         }
     }
