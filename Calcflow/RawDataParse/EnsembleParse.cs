@@ -55,9 +55,15 @@ namespace RawDataParse
         internal const string SystemSettingID = "E000014\0";  //LPJ 2015-8-14
         internal const string ProfileRangeTrackingID = "E000015\0";  //LPJ 2019-2-28
         internal const string GageDataID = "E000016\0";  //LPJ 2015-8-14
+        private string RiverBTID = "R000001\0";
+        private string RiverTimeStampID = "R000002\0";
+        private string RiverNMEAID = "R000003\0";
+        private string RiverBThump = "R000004\0";
+        private string RiverStationID = "R000005\0";
+        private string RiverTransectID = "R000006\0";
 
 
-        internal const int MaxArray = 16;
+        internal const int MaxArray = 20;
 
         private byte ByteArrayToByte(byte[] packet)
         {
@@ -110,6 +116,7 @@ namespace RawDataParse
             m.AncillaryAvailable = false;
             m.BottomTrackAvailable = false;
             m.NmeaAvailable = false;
+            m.TransectStateAvailable = false;
             int i = 0;
             PacketPointer = HDRLEN;
           
@@ -122,6 +129,27 @@ namespace RawDataParse
                 m.NameLen[i] = this.ByteArrayToInt(packet);
                 m.Name[i] = this.ByteArrayToString(packet, 8);
                 ArrayCount = m.Bins[i] * m.Beams[i];
+
+                /*
+                switch (m.Type[i])
+                {
+                    default:
+                        break;
+                    case 50:
+                        break;
+                    case 0:
+                        ArrayCount *= 8;
+                        break;
+                    case 10:
+                    case 20:
+                        ArrayCount *= 4;
+                        break;
+                    case 30:
+                    case 40:
+                        ArrayCount *= 2;
+                        break;
+                }
+                */
                 SizeCount = this.PacketPointer;
               
                 if (VelocityID.Equals(m.Name[i], StringComparison.Ordinal))
@@ -496,6 +524,29 @@ namespace RawDataParse
                     m.DesiredNoTransmitCarrierCycles = this.ByteArrayToFloat(packet);
 
                 }
+                else if (RiverTransectID.Equals(m.Name[i], StringComparison.Ordinal))
+                {
+                    m.TransectStateAvailable = true;
+                    m.TransectState = ByteArrayToFloat(packet);
+                    m.TransectNumber = ByteArrayToFloat(packet);
+                    m.TransectStatus = ByteArrayToFloat(packet);
+                    m.BottomStatus = ByteArrayToFloat(packet);
+                    m.ProfileStatus = ByteArrayToFloat(packet);
+                    m.MovingEnsembles = ByteArrayToFloat(packet);
+                    m.MovingBTEnsembles = ByteArrayToFloat(packet);
+                    m.MovingWPEnsembles = ByteArrayToFloat(packet);
+                    m.CurrentEdge = ByteArrayToFloat(packet);
+
+                    m.EdgeType[0] = ByteArrayToFloat(packet);
+                    m.EdgeDistance[0] = ByteArrayToFloat(packet);
+                    m.EdgeEnsembles[0] = ByteArrayToFloat(packet);
+                    m.EdgeStatus[0] = ByteArrayToFloat(packet);
+
+                    m.EdgeType[1] = ByteArrayToFloat(packet);
+                    m.EdgeDistance[1] = ByteArrayToFloat(packet);
+                    m.EdgeEnsembles[1] = ByteArrayToFloat(packet);
+                    m.EdgeStatus[1] = ByteArrayToFloat(packet);
+                }
 
                 SizeCount = (this.PacketPointer - SizeCount) / GetDataTypeSize(m.Type[i]); //LPJ 2019-4-8
                 if (SizeCount != ArrayCount)
@@ -515,9 +566,9 @@ namespace RawDataParse
                 i++;
             }
             m.nArray = i + 1;
-            if (i >= 16)
+            if (i >= 20)
             {
-                m.nArray = 16;
+                m.nArray = 20;
             }
             if (m.E_Cells < 1L)
             {

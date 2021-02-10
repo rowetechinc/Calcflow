@@ -79,7 +79,7 @@ namespace Calcflow
     /// </summary>
     public class ArrayClass
     {
-        private const int MaxArray = 16;
+        private const int MaxArray = 20;
         private const int MaxBins = 200;
         // Fields
         /// <summary>
@@ -155,7 +155,10 @@ namespace Calcflow
         /// Nmea数据有效性
         /// </summary>
         public bool NmeaAvailable;
-
+        /// <summary>
+        /// TransectState布尔值
+        /// </summary>
+        public bool TransectStateAvailable;//matrix name = R000006 = River Transect State
         /// <summary>
         /// 每个Beam的Bin速度
         /// </summary>
@@ -563,6 +566,21 @@ namespace Calcflow
         public float SinglePingRange_Std;
         public float DesiredNoTransmitCarrierCycles;
         #endregion
+
+        public float TransectState;
+        public float TransectNumber;
+        public float TransectStatus;
+        public float BottomStatus;
+        public float ProfileStatus;
+        public float MovingEnsembles;
+        public float MovingBTEnsembles;
+        public float MovingWPEnsembles;
+        public float CurrentEdge;
+        public float[] EdgeType = new float[2];
+        public float[] EdgeDistance = new float[2];
+        public float[] EdgeEnsembles = new float[2];
+        public float[] EdgeStatus = new float[2];
+
     }
 
     /// <summary>
